@@ -1,0 +1,31 @@
+# Use the official Node.js image with TypeScript support
+FROM node:20.10.0-alpine
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Install nodemon globally
+RUN npm install -g nodemon
+
+# Copy the wait-for-it.sh script
+COPY wait-for-it.sh ./
+
+# Copy the rest of the application code
+COPY . .
+
+# Make the wait-for-it.sh script executable
+RUN chmod +x wait-for-it.sh
+
+# Expose the port the app runs on
+EXPOSE 5001
+
+# Command to start the application in development mode
+#CMD ["/bin/bash", "./wait-for-it.sh", "mongodb:27017", "-t", "30", "--", "npm", "run", "dev"] #this for the server
+CMD ["./wait-for-it.sh", "mongodb:27017", "-t", "30", "--", "npm", "run", "dev"]
+
