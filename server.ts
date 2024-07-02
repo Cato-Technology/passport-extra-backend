@@ -5,7 +5,9 @@ import { env } from './config';
 import authApp from './auth-service/src/app';
 import userApp from './user-service/src/app';
 import notificationApp from './notification-service/src/app';
+import formApp from './form-service/src/app';
 import apiGatewayApp from './api/src/app';
+import calenderApp from './calender-service/src/app';
 import { authenticateToken } from './shared/src/middleware/authMiddleware';
 
 const app = express();
@@ -39,6 +41,8 @@ const startServer = async () => {
         app.use('/api/auth', authApp);
         app.use('/api/users', authenticateToken, userApp);
         app.use('/api/notifications', authenticateToken, notificationApp);
+        app.use('/api/forms', authenticateToken, formApp);
+        app.use('/api/calendar', authenticateToken, calenderApp);
         //app.use('/api', authenticateToken, apiGatewayApp);
 
         app.listen(PORT, () => {
